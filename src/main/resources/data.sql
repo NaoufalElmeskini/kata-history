@@ -3,6 +3,6 @@ CREATE TABLE IF NOT EXISTS transaction (
     payerid INT,
     payeeid INT,
     amount FLOAT,
-    _date date NOT NULL,
+    date date NOT NULL,
     PRIMARY KEY (id)
 );
