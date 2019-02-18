@@ -19,6 +19,14 @@ public class TransactionController {
 	@Autowired
 	private TransactionRepository repository;
 	
+	@GetMapping("/history")
+	public List<Transaction> getTransactionHistory(){
+		
+		List<Transaction> allTransactionList = repository.findAll();
+		allTransactionList.sort(Comparator.comparing(Transaction::getDate));
+		return allTransactionList;
+	}
+	
 	@GetMapping("/history/{accountid}")
 	public List<Transaction> getTransactionHistory(@PathVariable int accountid){
 		List<Transaction> transactionListAsAPayer = repository.findByPayerid(accountid);
@@ -32,31 +40,10 @@ public class TransactionController {
 		return allTransactionList;
 	}
 	
-	@GetMapping("/history")
-	public List<Transaction> getTransactionHistory(){
-		
-		List<Transaction> allTransactionList = repository.findAll();
-		allTransactionList.sort(Comparator.comparing(Transaction::getDate));
-		return allTransactionList;
-	}
-	
 	@PostMapping("/transaction")
 	public Transaction createTransaction(@RequestBody Transaction transaction){
 		System.out.println("transaction: " + transaction);
 		return repository.save(transaction);
 	}
-	
-//	@PostMapping("/transaction/payer/{payerid}/payee/{payeeid}/amount/{amount}")
-//	public Transaction addTransaction(@PathVariable int payerid, @PathVariable int payeeid, @PathVariable int amount){
-//		Transaction transaction = new Transaction();
-//		Date date = new Date();
-//		
-//		transaction.setPayerid(payerid);
-//		transaction.setPayeeid(payeeid);
-//		transaction.setAmount(amount);
-//		transaction.setDate(date);
-//		
-//		return repository.saveAndFlush(transaction);
-//	}
 	
 }
